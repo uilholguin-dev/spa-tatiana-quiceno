@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel de citas · Tatiana Quiceno</title>
+<link rel="icon" href="../img/logo-cara.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=Marcellus&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#FFFBFC; --white:#FFFFFF; --petal:#FBEFF3; --line:#F1D6DF; --ink:#1E1A1C; --muted:#6B5A62;
+  --rose:#B03A62; --field:#A87485; --wa:#0F7A3F;
+  --pend:#8A5A00; --pend-bg:#FFF3D6; --conf:#1F4FA0; --conf-bg:#E3ECFB; --ok:#0F6B3A; --ok-bg:#DDF3E6;
+  --bad:#A3261E; --bad-bg:#FBE3E1; --gray:#5B5458; --gray-bg:#EEE9EB;
+  --display:"Marcellus", Georgia, serif; --body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+a{color:var(--ink)}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0}
+p{margin:0}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+input,select{font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--field);border-radius:10px;min-height:44px;padding:0 12px;width:100%}
+label{font-weight:600;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid transparent;font:700 15px var(--body);cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-rose{background:var(--rose);color:#fff}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-line{background:#fff;border-color:var(--field);color:var(--ink)}
+.btn-ghost{background:none;color:var(--muted);padding:0 8px}
+.btn:disabled{opacity:.55;cursor:wait}
+.field{display:flex;flex-direction:column;gap:6px}
+.msg{font-size:14px;font-weight:600;color:var(--bad)}
+
+/* Ingreso */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding-block:32px}
+.login-card{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:16px}
+.login-card .brand{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.login-card img{width:72px;height:72px;border-radius:50%;object-fit:cover}
+.script{font-family:"Allura",cursive;font-size:34px;line-height:1}
+
+/* Panel */
+.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.top-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.top-brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none}
+.top-brand span{font-family:var(--display);font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+main{padding-block:20px 64px;display:flex;flex-direction:column;gap:20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.kpi small{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kpi b{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px}
+.bar .field{flex:1 1 150px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.tab{flex:none;min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font:600 14px var(--body);color:var(--ink);cursor:pointer}
+.tab[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab em{font-style:normal;opacity:.7;margin-left:4px}
+.list{display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.when{font-family:var(--display);font-size:20px;line-height:1.2}
+.who{display:flex;flex-direction:column;gap:2px;min-width:0}
+.who strong{font-size:17px;overflow-wrap:anywhere}
+.who a{font-size:15px;font-variant-numeric:tabular-nums}
+.pill{flex:none;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.p-pendiente{background:var(--pend-bg);color:var(--pend)} .p-confirmada{background:var(--conf-bg);color:var(--conf)}
+.p-asistio{background:var(--ok-bg);color:var(--ok)} .p-no_vino{background:var(--bad-bg);color:var(--bad)} .p-cancelada{background:var(--gray-bg);color:var(--gray)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 16px;font-size:14px}
+.facts div{display:flex;flex-direction:column}
+.facts small{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.facts span{overflow-wrap:anywhere}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;padding-top:12px;border-top:1px dashed var(--line)}
+.acts .field{flex:1 1 130px}
+details.mover{flex-basis:100%}
+details.mover summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--muted);min-height:32px;display:flex;align-items:center}
+details.mover .row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;padding-top:8px}
+details.mover .field{flex:1 1 140px}
+.empty{background:#fff;border:1px dashed var(--field);border-radius:18px;padding:28px;text-align:center;color:var(--muted)}
+.section-title{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 10px}
+.section-title h2{font-size:24px}
+.section-title span{font-size:13px;color:var(--muted)}
+.newbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.newbox summary{cursor:pointer;font-weight:700;min-height:32px;display:flex;align-items:center}
+.newgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;padding-top:12px;align-items:end}
+.origins{background:#fff;border:1px solid var(--line);border-radius:16px;overflow-x:auto}
+.origins table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.origins th,.origins td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+.origins th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.origins td:not(:first-child),.origins th:not(:first-child){text-align:right}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:16px;font-weight:600;z-index:10;max-width:calc(100% - 32px)}
+.toast.bad{background:var(--bad)}
+</style>
+</head>
+<body>
+
+<section class="login" id="v-login" hidden>
+  <form class="login-card" id="login-form" novalidate>
+    <div class="brand">
+      <img src="../img/logo-cara.jpg" alt="">
+      <span class="script">Tatiana Quiceno</span>
+      <h1 style="font-size:20px">Panel de citas</h1>
+    </div>
+    <div class="field"><label for="l-email">Correo</label><input id="l-email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="l-pass">Contraseña</label><input id="l-pass" type="password" autocomplete="current-password" required></div>
+    <p class="msg" id="l-msg" role="alert" hidden></p>
+    <button class="btn btn-rose" id="l-btn" type="submit">Entrar</button>
+  </form>
+</section>
+
+<div id="v-app" hidden>
+  <header class="top">
+    <div class="wrap">
+      <div class="top-brand"><img src="../img/logo-cara.jpg" alt=""><span>Citas · Tatiana Quiceno</span></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-line" id="b-refresh" type="button">Actualizar</button>
+        <button class="btn btn-ghost" id="b-logout" type="button">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="msg" id="sin-acceso" hidden>Entraste, pero este correo todavía no tiene permiso para ver las citas. Pide que lo agreguen como administradora.</p>
+
+    <details class="newbox" id="nueva">
+      <summary>+ Agregar cita (WhatsApp, Instagram o en persona)</summary>
+      <form class="newgrid" id="nueva-form" novalidate>
+        <div class="field"><label for="n-nombre">Nombre</label><input id="n-nombre" type="text" maxlength="80"></div>
+        <div class="field"><label for="n-cel">Celular</label><input id="n-cel" type="tel" inputmode="numeric" maxlength="16"></div>
+        <div class="field"><label for="n-svc">Servicio</label><select id="n-svc"></select></div>
+        <div class="field"><label for="n-dia">Día</label><input id="n-dia" type="date"></div>
+        <div class="field"><label for="n-hora">Hora</label><input id="n-hora" type="time" min="08:00" max="17:30" step="1800" value="08:00"></div>
+        <button class="btn btn-rose" type="submit" id="n-btn">Guardar cita</button>
+      </form>
+    </details>
+
+    <div class="tabs" role="group" aria-label="Filtrar citas" id="tabs"></div>
+    <div class="list" id="list"></div>
+
+    <div class="section-title"><h2>Resultados</h2>
+      <div class="bar" style="flex:1 1 360px;justify-content:flex-end">
+        <div class="field"><label for="f-rango">Periodo</label>
+          <select id="f-rango">
+            <option value="7">Últimos 7 días</option>
+            <option value="14">Últimos 14 días</option>
+            <option value="30" selected>Últimos 30 días</option>
+            <option value="90">Últimos 90 días</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-inversion">Invertido en anuncios ($)</label>
+          <input id="f-inversion" type="text" inputmode="numeric" placeholder="Ej: 350000">
+        </div>
+      </div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="section-title"><h2>Retoques por ofrecer</h2><span>Clientas que vinieron hace 2 a 4 semanas</span></div>
+    <div class="list" id="retoques"></div>
+
+    <div class="section-title"><h2>¿De dónde llegan?</h2></div>
+    <div class="origins"><table><thead><tr><th>Origen</th><th>Reservas</th><th>Confirmadas</th><th>Asistieron</th><th>Ventas</th></tr></thead><tbody id="origins"></tbody></table></div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script>
+(function () {
+  var SB_URL = "https://qhdgdjfatrizsztrpntl.supabase.co";
+  var SB_KEY = "sb_publishable_Qpem0qa1w73nk3ozHRmByw_UiUS8q-B";
+  var TZ = "-05:00", ZONA = "America/Bogota";
+  var DIRECCION = "Calle 24A # 58C-21, piso 3, Cabañas";
+  var sb = window.supabase.createClient(SB_URL, SB_KEY);
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var cop = function (n) { return "$" + Math.round(n || 0).toLocaleString("es-CO"); };
+  var num = function (v) { var d = String(v || "").replace(/\D/g, ""); return d ? parseInt(d, 10) : 0; };
+  var limpiarCel = function (v) { var d = String(v || "").replace(/\D/g, ""); if (d.length === 12 && d.indexOf("57") === 0) d = d.slice(2); return d; };
+  var ESTADOS = { pendiente: "Pendiente", confirmada: "Confirmada", asistio: "Asistió", no_vino: "No vino", cancelada: "Cancelada" };
+  var TABS = [["pendiente", "Por confirmar"], ["hoy", "Hoy"], ["proximas", "Próximas"], ["asistio", "Asistieron"], ["todas", "Todas"]];
+  var st = { reservas: [], tab: "pendiente", servicios: [] };
+
+  // Fechas en hora de Colombia
+  var diaDe = function (iso) { return new Date(new Date(iso).getTime() - 5 * 3600000).toISOString().slice(0, 10); };
+  var horaDe = function (iso) { return new Date(new Date(iso).getTime() - 5 * 3600000).toISOString().slice(11, 16); };
+  var hoy = function (off) { return new Date(Date.now() - 5 * 3600000 + (off || 0) * 86400000).toISOString().slice(0, 10); };
+  var fmtCuando = function (iso) { return new Date(iso).toLocaleString("es-CO", { timeZone: ZONA, weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }); };
+  var fmtHora = function (iso) { return new Date(iso).toLocaleTimeString("es-CO", { timeZone: ZONA, hour: "numeric", minute: "2-digit" }); };
+  var fmtDiaLargo = function (iso) { return new Date(iso).toLocaleDateString("es-CO", { timeZone: ZONA, weekday: "long", day: "numeric", month: "long" }); };
+  function hace(ts) {
+    var m = Math.round((Date.now() - new Date(ts).getTime()) / 60000);
+    if (m < 60) return "hace " + Math.max(m, 1) + " min";
+    var h = Math.round(m / 60); if (h < 24) return "hace " + h + " h";
+    return "hace " + Math.round(h / 24) + " d";
+  }
+  var wa = function (cel, txt) { return "https://wa.me/57" + cel + (txt ? "?text=" + encodeURIComponent(txt) : ""); };
+  var nombre1 = function (r) { return String(r.nombre).split(" ")[0]; };
+  function toast(t, bad) { var el = $("#toast"); el.textContent = t; el.className = "toast" + (bad ? " bad" : ""); el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { el.hidden = true; }, bad ? 5000 : 2600); }
+  function errorTexto(e) {
+    if (!e) return "No se guardó el cambio. Vuelve a intentar.";
+    if (e.code === "23P01") return "Esa hora se cruza con otra cita. Elige otra hora.";
+    if (/^FUERA_DE_HORARIO/.test(e.message || "")) return "Fuera de horario: " + e.message.replace(/^FUERA_DE_HORARIO:\s*/, "") + ".";
+    if (/celular/.test(e.message || "")) return "Revisa el celular: deben ser 10 dígitos y empezar por 3.";
+    return "No se guardó el cambio. Vuelve a intentar.";
+  }
+
+  try { $("#f-inversion").value = localStorage.getItem("tq_inversion") || ""; } catch (e) {}
+  $("#f-inversion").addEventListener("input", function () { try { localStorage.setItem("tq_inversion", this.value); } catch (e) {} pintar(); });
+  $("#f-rango").addEventListener("change", pintar);
+  $("#n-dia").min = hoy(-30);
+
+  // ---------- Sesión ----------
+  async function iniciar() {
+    var r = await sb.auth.getSession();
+    if (r.data && r.data.session) mostrarApp(); else $("#v-login").hidden = false;
+  }
+  function mostrarApp() { $("#v-login").hidden = true; $("#v-app").hidden = false; cargarServicios(); cargar(); }
+  $("#login-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var btn = $("#l-btn"), msg = $("#l-msg");
+    msg.hidden = true; btn.disabled = true; btn.textContent = "Entrando…";
+    var r = await sb.auth.signInWithPassword({ email: $("#l-email").value.trim().toLowerCase(), password: $("#l-pass").value });
+    btn.disabled = false; btn.textContent = "Entrar";
+    if (r.error) { msg.textContent = "Correo o contraseña incorrectos. Revisa y vuelve a intentar."; msg.hidden = false; return; }
+    mostrarApp();
+  });
+  $("#b-logout").addEventListener("click", async function () { await sb.auth.signOut(); location.reload(); });
+  $("#b-refresh").addEventListener("click", cargar);
+
+  // ---------- Datos ----------
+  async function cargarServicios() {
+    var r = await sb.from("servicios").select("nombre,precio,duracion_min").order("orden");
+    st.servicios = r.data || [];
+    $("#n-svc").innerHTML = st.servicios.map(function (s) { return '<option value="' + esc(s.nombre) + '">' + esc(s.nombre) + " · " + (s.duracion_min / 60).toString().replace(".", ",") + " h</option>"; }).join("");
+  }
+  async function cargar() {
+    var desde = new Date(Date.now() - 95 * 86400000).toISOString();
+    var r = await sb.from("reservas").select("*").or("inicio.gte." + desde + ",creada_en.gte." + desde).order("inicio", { ascending: true }).limit(3000);
+    if (r.error) { toast("No se pudieron cargar las citas. Revisa tu conexión.", true); return; }
+    st.reservas = r.data || [];
+    $("#sin-acceso").hidden = true;
+    if (!st.reservas.length) {
+      var p = await sb.rpc("es_admin");
+      $("#sin-acceso").hidden = p.data !== false;
+    }
+    pintar();
+  }
+  async function cambiar(id, cambios, ok) {
+    var r = await sb.from("reservas").update(cambios).eq("id", id).select();
+    if (r.error || !r.data || !r.data.length) { toast(errorTexto(r.error), true); return false; }
+    toast(ok); cargar(); return true;
+  }
+
+  // ---------- Pintar ----------
+  function enRango(r) { var dias = parseInt($("#f-rango").value, 10); return new Date(r.creada_en).getTime() >= Date.now() - dias * 86400000; }
+
+  function filtradas() {
+    var h = hoy(), ahora = Date.now();
+    var lista = st.reservas.filter(function (r) {
+      if (st.tab === "pendiente") return r.estado === "pendiente" && new Date(r.fin).getTime() > ahora;
+      if (st.tab === "hoy") return diaDe(r.inicio) === h && (r.estado === "pendiente" || r.estado === "confirmada" || r.estado === "asistio");
+      if (st.tab === "proximas") return new Date(r.inicio).getTime() > ahora && (r.estado === "pendiente" || r.estado === "confirmada");
+      if (st.tab === "asistio") return r.estado === "asistio" && enRango(r);
+      return enRango(r);
+    });
+    if (st.tab === "asistio" || st.tab === "todas") lista.reverse();
+    return lista;
+  }
+
+  function pintar() {
+    var cs = st.reservas.filter(enRango), h = hoy(), ahora = Date.now();
+    var conf = cs.filter(function (r) { return r.estado === "confirmada" || r.estado === "asistio" || r.estado === "no_vino"; }).length;
+    var asis = cs.filter(function (r) { return r.estado === "asistio"; });
+    var ventas = asis.reduce(function (s, r) { return s + (r.valor_pagado || 0); }, 0);
+    var inv = num($("#f-inversion").value);
+    var web = cs.filter(function (r) { return r.canal === "web"; }).length;
+    var kp = [
+      ["Reservas", cs.length, web + " desde la página"],
+      ["Confirmadas", conf, cs.length ? Math.round(conf * 100 / cs.length) + "% de las reservas" : "—"],
+      ["Asistieron", asis.length, conf ? Math.round(asis.length * 100 / conf) + "% de las confirmadas" : "—"],
+      ["Ventas", cop(ventas), asis.length ? "Promedio " + cop(ventas / asis.length) : "—"],
+      ["Costo por clienta", inv && asis.length ? cop(inv / asis.length) : "—", inv ? "Invertido " + cop(inv) : "Escribe lo invertido"]
+    ];
+    $("#kpis").innerHTML = kp.map(function (k) { return '<div class="kpi"><small>' + esc(k[0]) + '</small><b>' + esc(k[1]) + '</b><span>' + esc(k[2]) + '</span></div>'; }).join("");
+
+    var guardaTab = st.tab, counts = {};
+    TABS.forEach(function (t) { st.tab = t[0]; counts[t[0]] = filtradas().length; });
+    st.tab = guardaTab;
+    $("#tabs").innerHTML = TABS.map(function (t) {
+      return '<button type="button" class="tab" data-tab="' + t[0] + '" aria-pressed="' + (st.tab === t[0]) + '">' + t[1] + '<em>' + counts[t[0]] + '</em></button>';
+    }).join("");
+
+    var lista = filtradas();
+    var vacios = { pendiente: "No hay reservas por confirmar. Las nuevas de la página aparecen aquí.", hoy: "No hay citas hoy.", proximas: "No hay citas próximas." };
+    $("#list").innerHTML = lista.length ? lista.map(tarjeta).join("") : '<div class="empty">' + (vacios[st.tab] || "No hay citas en este periodo.") + '</div>';
+
+    var ret = st.reservas.filter(function (r) { var d = diaDe(r.inicio); return r.estado === "asistio" && d >= hoy(-30) && d <= hoy(-14); });
+    $("#retoques").innerHTML = ret.length ? ret.map(function (r) {
+      var txt = "Hola " + nombre1(r) + ", soy Tatiana 💕 Ya van unas semanas desde tu " + r.servicio + ". ¿Te agendo el retoque esta semana?";
+      return '<div class="card"><div class="card-top"><div class="who"><strong>' + esc(r.nombre) + '</strong><span style="font-size:14px;color:var(--muted)">' + esc(r.servicio) + ' · vino el ' + esc(fmtDiaLargo(r.inicio)) + '</span></div>' +
+        '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + esc(wa(r.celular, txt)) + '">Ofrecer retoque</a></div></div>';
+    }).join("") : '<div class="empty">Aún no hay clientas para retoque. Aparecen 2 semanas después de su cita.</div>';
+
+    var por = {};
+    cs.forEach(function (r) {
+      var o = r.canal === "manual" ? "Agregada en el panel" : (r.utm_content || r.utm_campaign || r.origen || "Página web");
+      por[o] = por[o] || { s: 0, c: 0, a: 0, v: 0 };
+      por[o].s++; if (r.estado === "confirmada" || r.estado === "asistio" || r.estado === "no_vino") por[o].c++;
+      if (r.estado === "asistio") { por[o].a++; por[o].v += r.valor_pagado || 0; }
+    });
+    var ks = Object.keys(por).sort(function (a, b) { return por[b].s - por[a].s; });
+    $("#origins").innerHTML = ks.length ? ks.map(function (k) {
+      return "<tr><td>" + esc(k) + "</td><td>" + por[k].s + "</td><td>" + por[k].c + "</td><td>" + por[k].a + "</td><td>" + esc(cop(por[k].v)) + "</td></tr>";
+    }).join("") : '<tr><td colspan="5" style="color:var(--muted)">Sin datos en este periodo.</td></tr>';
+  }
+
+  function moverHTML(r) {
+    return '<details class="mover"><summary>Cambiar día u hora</summary><div class="row">' +
+      '<div class="field"><label for="md-' + r.id + '">Día</label><input id="md-' + r.id + '" type="date" value="' + diaDe(r.inicio) + '"></div>' +
+      '<div class="field"><label for="mh-' + r.id + '">Hora</label><input id="mh-' + r.id + '" type="time" step="1800" min="08:00" max="17:30" value="' + horaDe(r.inicio) + '"></div>' +
+      '<button class="btn btn-line" data-act="mover" data-id="' + r.id + '">Mover cita</button></div></details>';
+  }
+
+  function tarjeta(r) {
+    var f = function (l, v) { return '<div><small>' + l + '</small><span>' + esc(v) + '</span></div>'; };
+    var facts = f("Servicio", r.servicio + (r.precio ? " · " + cop(r.precio) : "")) +
+      f("Origen", r.canal === "manual" ? "Agregada en el panel" : (r.utm_content || r.utm_campaign || r.origen || "Página web")) +
+      f("Reservó", hace(r.creada_en)) +
+      (r.valor_pagado != null ? f("Pagó", cop(r.valor_pagado)) : "");
+    var n = nombre1(r), cuando = fmtDiaLargo(r.inicio) + " a las " + fmtHora(r.inicio), acts = "";
+    if (r.estado === "pendiente") {
+      acts = '<button class="btn btn-rose" data-act="confirmar" data-id="' + r.id + '">Confirmar</button>' +
+        '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + esc(wa(r.celular, "Hola " + n + ", soy Tatiana 💕 Te confirmo tu cita de " + r.servicio + " el " + cuando + " en la " + DIRECCION + ". ¡Te espero!")) + '">Confirmarle por WhatsApp</a>' +
+        '<button class="btn btn-ghost" data-act="cancelar" data-id="' + r.id + '">Cancelar</button>' + moverHTML(r);
+    } else if (r.estado === "confirmada") {
+      var rec = "Hola " + n + ", te espero el " + cuando + " en la " + DIRECCION + ". Ven sin maquillaje en los ojos 🙏 ¿Me confirmas?";
+      acts = '<div class="field"><label for="vp-' + r.id + '">Valor pagado</label><input id="vp-' + r.id + '" type="text" inputmode="numeric" value="' + (r.precio || "") + '"></div>' +
+        '<button class="btn btn-rose" data-act="asistio" data-id="' + r.id + '">Asistió</button>' +
+        '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + esc(wa(r.celular, rec)) + '">Recordatorio</a>' +
+        '<button class="btn btn-line" data-act="no_vino" data-id="' + r.id + '">No vino</button>' +
+        '<button class="btn btn-ghost" data-act="cancelar" data-id="' + r.id + '">Cancelar</button>' + moverHTML(r);
+    } else if (r.estado === "asistio") {
+      acts = '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + esc(wa(r.celular, "¡Gracias por venir, " + n + "! 💕 ¿Me regalas una reseña en Google? Tu retoque ideal es en unas 3 semanas, ¿te lo dejo agendado?")) + '">Pedir reseña y retoque</a>';
+    } else {
+      acts = '<button class="btn btn-line" data-act="reabrir" data-id="' + r.id + '">Volver a pendiente</button>';
+    }
+    return '<article class="card"><div class="card-top"><div class="who"><span class="when">' + esc(fmtCuando(r.inicio)) + ' – ' + esc(fmtHora(r.fin)) + '</span>' +
+      '<strong>' + esc(r.nombre) + '</strong>' +
+      '<a href="' + esc(wa(r.celular)) + '" target="_blank" rel="noopener">' + esc(String(r.celular).replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")) + '</a></div>' +
+      '<span class="pill p-' + esc(r.estado) + '">' + esc(ESTADOS[r.estado] || r.estado) + '</span></div>' +
+      '<div class="facts">' + facts + '</div><div class="acts">' + acts + '</div></article>';
+  }
+
+  // ---------- Acciones ----------
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-tab]");
+    if (t) { st.tab = t.getAttribute("data-tab"); pintar(); return; }
+    var b = e.target.closest("[data-act]");
+    if (!b) return;
+    var id = b.getAttribute("data-id"), act = b.getAttribute("data-act");
+    if (act === "confirmar") cambiar(id, { estado: "confirmada" }, "Cita confirmada");
+    else if (act === "asistio") cambiar(id, { estado: "asistio", valor_pagado: num($("#vp-" + id).value) }, "Marcada como asistió");
+    else if (act === "no_vino") cambiar(id, { estado: "no_vino" }, "Marcada como no vino");
+    else if (act === "cancelar") cambiar(id, { estado: "cancelada" }, "Cita cancelada. La hora quedó libre.");
+    else if (act === "reabrir") cambiar(id, { estado: "pendiente" }, "Volvió a pendientes");
+    else if (act === "mover") {
+      var d = $("#md-" + id).value, h = $("#mh-" + id).value;
+      if (!d || !h) { toast("Elige día y hora.", true); return; }
+      cambiar(id, { inicio: d + "T" + h + ":00" + TZ }, "Cita movida");
+    }
+  });
+
+  $("#nueva-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var nombre = $("#n-nombre").value.trim(), cel = limpiarCel($("#n-cel").value), svc = $("#n-svc").value, d = $("#n-dia").value, h = $("#n-hora").value;
+    if (nombre.length < 2 || !/^3\d{9}$/.test(cel) || !svc || !d || !h) { toast("Completa nombre, celular de 10 dígitos, servicio, día y hora.", true); return; }
+    var btn = $("#n-btn"); btn.disabled = true;
+    var r = await sb.from("reservas").insert({ canal: "manual", estado: "confirmada", nombre: nombre, celular: cel, servicio: svc, inicio: d + "T" + h + ":00" + TZ, origen: "Panel" }).select();
+    btn.disabled = false;
+    if (r.error) { toast(errorTexto(r.error), true); return; }
+    this.reset(); $("#n-hora").value = "08:00"; $("#nueva").open = false;
+    toast("Cita guardada. Esa hora ya no aparece libre en la página."); cargar();
+  });
+
+  iniciar();
+})();
+</script>
+</body>
+</html>
